@@ -29,3 +29,38 @@ Once the object (peter and mary) are created they are independent and can be mod
 ######################
 
 a book titled "how to build a car" gives us 3 cars that are instance of the class book
+
+etat/state characterise intrinsecment the car i.e. the instance
+state of the cars are:
+@color = string
+@engine_started = boolean
+
+car instance one = red
+car instance two = green
+those are state of the instance
+
+car instance one = engine_start = true
+car instance two = engine_start = false
+that was the state of the cars i.e. state of the instance
+THOSE ARE CALLED INSTANCE VARIABLE
+
+now let's talk about behavior
++start_engine will modify the instance and will make engine_started false become true
++paint method that will change the color of the car
++engine_started?()
+THOSE ARE INSTANCE METHODS
+
+There are also CLASS METHODS that are method that goes on the class and not on the instance
+
+encapsulation is the fact that the state is hidden in the object. You need to ask to know what it is.
+
+
+CODING
+# 1 class == 1 file
+# naming: class start with a capital. always a capital after the word class.
+Hash
+Array
+sport.rb <==> class Sport
+sports_car.rb <==> class SportsCar
+file are in small letters seperated by _ if two words
+class always take a Capital letter

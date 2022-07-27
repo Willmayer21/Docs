@@ -25,8 +25,21 @@ class Car
   # car.color <==> car.send(:color)
   # using car.color is like sending a message to the instance.
 
+  # Encapsulation:
+  # all the instance variale starting with a @
+  # are not showed to the public and some method
+  # can be put in private so that the method you
+  # put in public stay there and can be used advitam eternam.
 
-  def paint(color)
+  # Everything should be private,
+  # Only the method that other people or other program will use
+
+
+  # def paint(color)
+  #   @color = color
+  # end
+
+  def color(color)
     @color = color
   end
 

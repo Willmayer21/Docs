@@ -1,0 +1,55 @@
+What’s the main application of WebSocket?
+ - WebSocket enables real-time in Web apps.
+
+ Which JavaScript method is called when data is broadcast in the cable?
+ - The received callback defined in the client subscription code:
+   consumer.subscriptions.create({ channel: "ChatroomChannel", id: id
+   }, {
+     received(data) {
+    // this code is executed when data is broadcast in the cable from the server
+    }
+   });
+
+What is ActionCable?
+ - ActionCable is a framework based on WebSocket to write real-time features in a Rails app.
+
+Is ActionCable a gem?
+ - It used to be a standalone gem but it was merged in Rails 5.
+   It comes now by default with rails new.
+
+What’s the main difference between HTTP and WebSocket?
+ - With WebSocket, the server can push updates without the client requesting it.
+
+What is the execution flow when a user opens a chatroom in a browser?
+ - The subscription creation request is called client-side
+ - It triggers the subscribed method of the ChatroomChannel
+From there on, the cable is connected between the client and the server on this chatroom’s channel.
+
+What is the execution flow when a new message is posted in a chatroom?
+ - The new message is pushed in the cable
+ - It triggers the received callback in all browsers connected to this chatroom
+
+How do you generate an ActionCable channel?
+ - rails g channel ChannelName
+
+Which pattern does ActionCable follow?
+ - A Pub/Sub pattern, for publish / subscribe.
+Clients subscribe to a channel, and the server publishes information in it, received by all subscribers.
+
+Cite examples of real-time features made possible with WS
+ - Chat,
+ - web notifications,
+ - live updates of news feed,
+ - user activity tracking,
+ - multi-user interaction…
+
+How do you broadcast data to users connected to the @chatroom channel?
+ - ChatroomChannel.broadcast_to(@chatroom, data)
+
+What are the 3 steps when you setup ActionCable?
+ - Generate the channel
+ - Setup the client subscriber with the received callback
+ - Broadcast data in the cable
+
+What protocol does ActionCable rely on?
+ - WebSocket (WS)

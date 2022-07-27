@@ -1,0 +1,93 @@
+.env is the file in the root of your project, where you store your environment variables (API credentials for instance).
+It contains sensitive information you don’t want to share with anyone.
+This file must be in your .gitignore file in order to make sure it won’t ever be
+pushed on GitHub! Working as a team, you’ll have to share this file manually with your teammates.
+
+- In terminal
+  HEROKU RUN + normal command
+
+<!-- Add a root route (url "/") before deployment on heroku -->
+
+<!-- create a new Rails project with a postgresql DB -->
+- In terminal
+  rails new $YOUR_APP_NAME --database=postgresql
+
+<!-- Display an image hosted by Cloudinary -->
+#  app/views/pages/home.html.erb -->
+<%= cl_image_tag("THE_IMAGE_ID_FROM_LIBRARY") %>
+<!-- <img src="https://cloudinary.com/images/v1/AZERRT9876dfgh2345PO.jpg" alt="AZERRT9876dfgh2345PO"> -->
+<!-- -->
+
+<!-- Add a Heroku remote in order to push your code in production from your laptop - if app not create by you -->
+- In terminal
+  heroku git:remote -a your-app-name
+<!-- -->
+
+<!-- Display the photo hosted by Cloudinary of @product -->
+# app/models/product.rb
+  class Product < ApplicationRecord
+    has_one_attached :photo
+  end
+
+  <%= cl_image_tag @product.photo.key %>
+<!-- <img src="https://cloudinary.com/images/v1/AZERRT9876dfgh2345PO.jpg" alt="AZERRT9876dfgh2345PO"> -->
+<!-- -->
+
+<!-- Image call -->
+<!-- app/views/products/show.html.erb -->
+  <%= cl_image_tag @product.photo.key, brightness: 30, radius: 20,
+  width: 150, height: 150, crop: :thumb, gravity: :face %>
+
+Define image transformation with Cloudinary in Image call
+
+<!-- CLoudinary transformation options-->
+https://cloudinary.com/documentation/image_transformations
+
+<!-- add to simple form to upload a Cloudinary/Active Storage photo -->
+<%= simple_form_for @product do |f| %>
+  <%= f.input :name %>
+  <%= f.input :description %>
+  <%= f.input :photo, as: :file %> <-----
+<% end %>
+
+<!-- Create app on Heroku -->
+- In terminal
+  heroku create $YOUR_APP_NAME --region eu
+
+<!-- Logs of app in production -->
+- In terminal
+  Heroku logs --tails
+
+<!-- Run pending migrations in your production environment -->
+- In terminal
+  heroku run rails db:migrate
+
+<!-- Active Storage migration installation commands -->
+- In terminal
+  rails active_storage:install # copies the migration files
+  rails db:migrate
+
+<!-- Push all secret variables to Heroku -->
+- In terminal
+  heroku config:set VARIABLE_NAME=value123
+  example heroku config:set CLOUDINARY_URL=cloudinary://298522699261255:Qa1ZfO4syfbOC-***********************8
+
+<!-- Open your website in your browser from your terminal -->
+- In terminal
+  heroku open
+
+<!-- Connect to Heroku account from your terminal -->
+- In terminal
+  heroku login
+
+<!-- Attached file with Active Storage to a model -->
+# app/models/product.rb
+  class Product < ApplicationRecord
+    has_one_attached :photo # OR
+    has_many_attached :photos
+  end
+# This is where you define the name of the attachment, it doesn't necessarily have to be :photo / :photos!
+
+<!-- Open a rails c in your production environment -->
+- In terminal
+  heroku run rails c

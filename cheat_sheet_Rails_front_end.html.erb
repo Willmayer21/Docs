@@ -1,0 +1,255 @@
+
+<!-- Define this link with rails -->
+<!-- #<Restaurant: id=28, name="Jules Verne", address="Tour Eiffel"> -->
+<a href="/restaurants/28" class="btn btn-primary">
+  Jules Verne <span class="label label-primary">OPEN</span>
+</a>
+equivalent to:
+<%= link_to restaurant_path(@restaurant), { class: "btn btn-primary" } do %>
+  <%= @restaurant.name %>
+  <span class="label label-primary">OPEN</span>
+<% end %>
+
+<!-- Define this link with rails -->
+<img src="assets/logo-f800df98aa2605c552400667353f47d2.png" class="img-circle" id="logo">
+equivalent to:
+<%= image_tag "logo.png", { class: "img-circle", id: "logo" } %>
+
+<!-- Simple Form #input method: -->
+<%= simple_form_for(@restaurant) do |f| %>
+  <%= f.input :name %>
+  <%= f.input :stars %>
+  <%= f.button :submit %>
+<% end %>
+This generates:
+<form id="new_restaurant" class="simple_form new_restaurant" novalidate="novalidate" method="post" enctype="multipart/form-data" accept-charset="UTF-8" action="/restaurants/new">
+  <div class="mb-3 name restaurant_name">
+    <label class="name form-label" for="restaurant_name"></label>
+    <input id="restaurant_name" class="string name form-control" name="restaurant[name] "type="text">
+  </div>
+  <div class="mb-3 stars restaurant_stars">
+    <label class="stars form-label" for="restaurant_stars"></label>
+    <input id="restaurant_stars" class="string stars form-control" name="restaurant[stars] "type="text">
+  </div>
+  <input class="btn btn-default" type="submit" value="Create Restaurant" name="commit">
+</form>
+
+<!-- Asset Pipeline -->
+  -Def
+    A framework to concatenate, minify and compress CSS and Images assets.
+    guides.rubyonrails.org/asset_pipeline
+  -Default
+    Implemented by sprockets-rails gem
+    rails new enables it by default
+    it deals with the following folder:
+      app > assets
+  -CSS is loaded in the layout
+    app/views/layouts/application.html.erb
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
+<!-- -->
+
+<!-- 5 STEPS ASSET PIPELINE -->
+5 steps the in-built Rails Assets Pipeline performs on assets to make them production-ready
+  Precompile
+    -SCSS => CSS
+    -Replace the auto-generated file:
+      rm app/assets/stylesheets/application.css
+      touch app/assets/stylesheets/application.scss
+  Concatenate
+    /* app/assets/stylesheets/application.scss */
+    @import "pages"; /* Will import `_pages.scss` */
+  Minify / Compress
+    SASS Compressor --> https://guides.rubyonrails.org/asset_pipeline.html#css-compression
+    Gzip --> https://guides.rubyonrails.org/asset_pipeline.html#serving-gzipped-version-of-assets
+    # config/environment/production.rb
+    # config.assets.css_compressor = :sass
+    When deploying, Heroku will precompile to generate final assets in public/assets. You can see how it works with:
+      echo "public/assets" >> .gitignore # Run once
+      rails assets:precompile
+      Don’t forget to clean up with: rails assets:clobber
+  Cache (fingerprinting)
+    /assets/application-f0d704[...]5794.css
+<!-- -->
+
+<!-- GEMS TO USE IN FRONT END -->
+autoprefixer to automatically put in css vendor prefixes to ensure all browser understand our css
+font-awesome-sass for great icons
+simple_form to be able to generate easily forms from our models
+
+<!-- Why does Rails add stamps to your assets when deploying in production? -->
+Browsers store app assets in cache to reduce page loading time.
+If you change an asset without changing its name,
+browsers won’t update it so your page won’t display changes.
+Adding a new stamp when asset change fixes this issue.
+
+<!-- Bootstrap -->
+  We will use yarn to import the CSS (and later also the JS) library of Bootstrap.
+    # In the terminal:
+    yarn add bootstrap
+  Now just import the CSS
+    /* app/assets/stylesheets/application.scss */
+    @import "bootstrap/scss/bootstrap"; /* picks it up in node_modules! */
+<!-- -->
+
+<!-- RUBY GEMS -->
+  # Gemfile
+  gem "autoprefixer-rails", "10.2.5" --> to automatically put in css vendor prefixes to ensure all browser understand our css
+  gem "font-awesome-sass", "~> 5.6.1" --> for great icons
+  gem "simple_form", github: 'heartcombo/simple_form' --> to be able to generate easily forms from our models
+
+  # terminal
+  bundle install
+  rails generate simple_form:install --bootstrap
+<!-- -->
+
+<!-- Le Wagon’s Stylesheets -->
+  rm -rf app/assets/stylesheets
+  curl -L https://github.com/lewagon/rails-stylesheets/archive/master.zip > stylesheets.zip
+  unzip stylesheets.zip -d app/assets && rm -f stylesheets.zip && rm -f app/assets/rails-stylesheets-master/README.md
+  mv app/assets/rails-stylesheets-master app/assets/stylesheets
+<!-- -->
+
+<!-- Stylesheets Architecture -->
+  components
+  │   ├── _index.scss               # Main components stylesheet
+  │   ├── _alert.scss
+  │   └── _navbar.scss
+  ├── config
+  │   ├── _bootstrap_variables.scss # Bootstrap variables override
+  │   ├── _colors.scss              # Colors variables 🎨
+  │   └── _fonts.scss               # Fonts variables ✍️
+  ├── pages
+  │   ├── _index.scss               # Main pages stylesheet
+  │   └── _home.scss
+  └── application.scss              # Main stylesheet - Open it!
+<!-- -->
+
+<!-- CSS -->
+  Actually SCSS (Sassy CSS 💁‍♀️)
+  .
+  └── app
+      └── assets
+          └── stylesheets
+<!-- -->
+
+<!-- Adding a new component -->
+  touch app/assets/stylesheets/components/_card.scss
+  You can use one of these cards
+  Then import this component in components/_index.scss:
+  /* app/assets/stylesheets/components/_index.scss */
+  @import "card";
+<!-- -->
+
+<!-- Images -->
+  .
+  └── app
+      └── assets
+          └── images
+
+  Images you own, part of the website design.
+  Not the ones user will upload (Tomorrow).
+  Let’s add this file to our images folder:
+  curl https://raw.githubusercontent.com/lewagon/fullstack-images/master/lewagon_logo.png > \
+  app/assets/images/logo.png
+<!-- -->
+
+<!-- Using images in views -->
+  We use the image_tag helper:
+  <%= image_tag "logo.png", alt: "Le Wagon", width: 200 %>
+  Look at the HTML source:
+  <img alt="Le Wagon"
+     width="200"
+     src="/assets/logo-37ca9[...]16691cdd.png" />
+  image_tag automatically fingerprints your images.
+<!-- -->
+
+<!-- Using images in CSS -->
+  Use asset-url or asset-path in CSS files.
+  <div class="logo"></div>
+  /* app/assets/stylesheets/_logo.scss */
+  .logo {
+  background-image: asset-url('logo.png');
+  background-size: cover;
+  height: 100px;
+  width: 250px;
+  }
+  /* app/assets/stylesheets/_index.scss */
+  @import "logo";
+<!-- -->
+
+<!-- JavaScript -->
+  JavaScript & the Asset Pipeline
+    Historically there was an app/assets/javascripts folder
+  Webpack!
+    Great features:
+      ES6 with Babel
+      NPM with yarn
+    Comes by default with rails new since Rails 6
+  Webpacker
+    Using the webpacker gem.
+      .
+      └── app
+          └── javascript
+  Packs
+    // app/javascript/packs/application.js
+    console.log("Hello from app/javascript/packs/application.js!");
+    <!-- app/views/layouts/application.html.erb -->
+      <!-- [...] -->
+      <%= javascript_pack_tag "application", "data-turbolinks-track": "reload", defer: true %>
+      <!-- loads app/javascript/packs/application.js -->
+    </head>
+  Add defer: true to wait for the HTML to be loaded before running the script
+<!-- -->
+
+<!-- Bootstrap JS -->
+  # In the terminal:
+  # if you haven't done it already
+  yarn add bootstrap
+
+  # and the dependencies
+  yarn add @popperjs/core
+
+  // app/javascript/packs/application.js
+  import "bootstrap"
+<!-- -->
+
+<!-- STIMULUS  -->
+Framework to link HTML element to specific JS behavior in Rails app.
+
+<!-- Writing JS with Stimulus -->
+  General rules
+    Create 1 separate Stimulus controller for each JavaScript behavior.
+    Wrap the HTML that you want to apply this behavior to within a data-controller.
+    Use data-target to select DOM elements. Don’t forget to add them to the targets array in your controller.
+    Use data-action to trigger an action on a specific event.
+  Install Stimulus
+    rails webpacker:install:stimulus
+    We can then remove the dummy file:
+    rm app/javascript/controllers/hello_controller.js
+<!-- -->
+
+<!-- Where to code your own JavaScript files -->
+app/javascript
+
+<!-- Use Simple form -->
+- Add bootstrap using yarn in the terminal:
+  yarn add bootstrap # This adds bootstrap into the node_modules
+- // app/assets/stylesheets/application.scss
+  @import "bootstrap/scss/bootstrap"; // This imports the SCSS of bootstrap from the node_modules
+- # Gemfile
+  gem 'simple_form'
+- In the terminal
+  bundle install
+  rails generate simple_form:install --bootstrap
+<!-- -->
+
+
+Questions
+- how to comment with <!-- -->
+- what is npm package?
+- what is an asset?
+- what is a stamp added by Rails?
+- what is a css vendor prefixes
+- what is fingerprinting --> /assets/application-f0d704[...]5794.css
+- what is a modal - boostrap JS
+- what is a helper?

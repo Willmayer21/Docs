@@ -1,0 +1,52 @@
+What essential tool should you use when testing regular expressions?
+ - Rubular, a tool to test and edit regex.
+   Also, Regulex is a nice tool to visualize the sequence pattern tested.
+
+What are the delimiters for regular expressions?
+  - Delimiters for regular expressions are slashes: /.../
+
+What Regexp anchor would you use to specify that the pattern you look for is at the end of a string?
+ - It’s \z, for instance:
+   /abc\z/  # any abc pattern found at the end of a string
+
+What Regexp anchor would you use to specify that the pattern you look for is at the end of a line?
+ - It’s $, for instance:
+   /abc$/  # any abc pattern found at the end of a line
+
+What Regexp quantifiers do you know?
+ - The most used quantifiers in Regexp are ?, *, + and {}
+   /abc?/    # ab followed by 0..1 c
+   /abc*/    # ab followed by 0..∞ c
+   /abc+/    # ab followed by 1..∞ c
+   /abc{3}/  # ab followed by 3 c
+
+What method should you use when you want to get all sequences matching a Regexp pattern in a String?
+ - You should use #scan which returns an Array of matching sequences,
+   whereas =~ and #match will return info about the first match only.
+
+What Regexp anchor would you use to specify that the pattern you look for is at the beginning of a string?
+  - It’s \A, for instance:
+    /\Aabc/  # any abc pattern found at the beginning of a string
+
+How do you define ranges in a Regexp?
+ - By using brackets:
+   /./           # any character
+   /[aB9]/       # a OR B OR 9
+   /[0-9]/       # any numeric character
+   /[a-zA-Z]/    # any alphabetical character
+   /[^a-c]/      # any char BUT a, b OR c
+
+What Regexp character is used in ranges to match any character NOT included in the range?
+ - It’s ^, for instance:
+   [^abc]  # any single character except: a, b, or c
+
+Do you know how to use #gsub with a Regexp?
+ - You can pass a Regexp as a first argument gsub(pattern, replacement), e.g.:
+   "Casanova".gsub(/[aeiou]/, "i")
+   # =>  "Cisinivi"
+   # replaces all vowels by the letter "i"
+
+What operator would you use to get the position of a Regexp pattern matched in a String?
+ - It’s =~, for instance:
+   "hello" =~ /l{2}/       # => 2
+   "hello" =~ /m{2}/       # => nil

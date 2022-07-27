@@ -1,0 +1,22 @@
+How does the geocoder gem work?
+ - The geocoder gem can use A number of Geocoding APIs
+   to find information about a location. The default
+   service is nominatim which is free, but it can also
+   be used with geocoding services from Google or MapBox.
+
+What is address autocomplete?
+ - A JS plugin of form autocompletion on address inputs.
+
+Why is address autocomplete so useful?
+ - UX is much better with only one field to complete
+ - It prevents you from users typos and guarantees the data you get is an actual address
+ - With the proper configuration, it guarantees the suggested addresses are geocoded by Google
+
+Why do we need to geocode address?
+ - GPS coordinates are easier to manipulate than addresses for a computer.
+
+What is geocoding?
+ - Geocoding means transforming address to GPS coordinates.
+
+What columns do you need to add to the Flat model to geocode address of a flat?
+ - You need to add columns latitude and longitude as float to flats.

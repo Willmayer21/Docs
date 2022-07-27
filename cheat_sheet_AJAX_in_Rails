@@ -1,0 +1,69 @@
+Why is AJAX so popular in the modern web
+ - It makes navigation snappy and gives the user the impression to use a native app.
+ - It prevents the white-page effect of the HTML page loading in the browser.
+
+How else can you Ajaxify an action in Rails?
+ - With Stimulus and fetch.
+ - Stimulus provides a framework to write less JavaScript than with Vanilla JS,
+   abstracting the querySelector and addEventListener in an elegant Object-Oriented way.
+ - Fetch is a native API supported by all browsers to send AJAX requests
+   from the client after the initial page load.
+
+How do you update a <form> to send its request in AJAX?
+ - With remote: true.
+    <!-- app/views/reviews/_form.html.erb -->
+    <%= simple_form_for([ restaurant, review ], remote: true) do |form| %>
+      <%= form.input :content %>
+      <%= form.button :submit %>
+    <% end %>
+
+In your ruby controller, how can you support both
+AJAX requests and classic requests expecting an HTML file?
+ - With respond_to:
+    respond_to do |format|
+      if @review.save
+        format.html { redirect_to restaurant_path(@restaurant) }
+        format.json # Follows the classic Rails flow and renders `app/views/reviews/create.json`
+      else
+        format.html { render 'restaurants/show' }
+        format.json # Follows the classic Rails flow and renders `app/views/reviews/create.json`
+      end
+    end
+
+Let’s consider this form:
+ -  <!-- app/views/reviews/_form.html.erb -->
+    <%= simple_form_for([ restaurant, review ], remote: true) do |form| %>
+      <%= form.input :content %>
+      <%= form.button :submit %>
+    <% end %>
+And this controller action:
+ -  def create
+      @restaurant = Restaurant.find(params[:restaurant_id])
+      @review = Review.new(review_params)
+      @review.restaurant = @restaurant
+      @review.save
+    end
+Do you need to adapt your controller’s code in order to make it work with the remote: true option?
+ -> NO
+
+What effect has Turbolinks on navigation links
+ - Turbolinks (and Rails UJS) prevent the default request (due to the <a>) and send it in AJAX.
+ - All GET links are “ajaxified” by default.
+
+What does Turbolinks do with the HTML file sent back by the server?
+ - Turbolinks replaces the <body> of the DOM with
+   the <body> of the HTML rendered by the controller, in JavaScript.
+
+Do we necessarily need a form_for to make an AJAX request with remote: true?
+ - No, we can use remote: true in link_to!
+   <%= link_to "Delete", restaurant_path(@restaurant), method: :delete, remote: true %>
+
+What does Turbolinks do with your browser’s history?
+ - After navigating in AJAX, Turbolinks replaces the url in the address bar
+   to let you refresh and keep the right context.
+ - Turbolinks also updates your browser’s navigation history,
+   to keep the Back and Next buttons working as expected.
+
+Which framework (activated by default) makes AJAX really easy to implement in Rails
+ - Turbolinks! It comes with a JS library and a ruby gem.
+ - You don’t need to write any code to activate it in a rails new project.

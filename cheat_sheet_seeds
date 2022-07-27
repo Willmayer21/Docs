@@ -1,0 +1,27 @@
+# in seed.rb #
+# when seeding for table that has references #
+# here, a user has many cars #
+# don't forget to had in the models: has_many :cars and belongs_to :user #
+# the code is read up down, a user is created first,
+# then a car, then the user1 is saved as car1.user,
+# repeat 5 times #
+
+require 'faker'
+Car.destroy_all
+User.destroy_all
+5.times do
+  user1 = User.create(
+    # first_name: Faker::Name.name,
+    # last_name: Faker::Name.name,
+    email: Faker::Internet.email,
+    password: '123456'
+  )
+  car1 = Car.new(
+    model: Faker::Book.title,
+    price: 1111,
+    year: rand(1920..2018),
+    description: Faker::Name.name
+  )
+  car1.user = user1
+  car1.save
+end

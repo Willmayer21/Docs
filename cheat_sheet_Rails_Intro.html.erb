@@ -1,0 +1,91 @@
+<!-- What is Rails? -->
+  - Rails is a fullstack framework designed for web-app development based on Ruby & MVC-structured.
+
+<!-- Params holds the data sent by your users through a form -->
+
+<!-- What is the Rails action/view convention? -->
+  - The Rails action/view convention links a 
+    controller’s action to 
+    a specific view through 
+    a naming convention
+
+<!-- Install gems you added to your Gemfile -->
+  - Kill any web server running (Ctrl + C)
+  - Run bundle install
+  - Restart the Rails server with rails s
+
+<!-- Gem information -->
+  - rubygems.org
+  - GitHub
+
+<!-- Action in Rails is a controller’s method targeted by a route -->
+
+<!-- Define a route to a ‘contact’ static page with Rails -->
+  # config/routes.rb
+    Rails.application.routes.draw do
+      get 'contact' => 'pages#contact'
+      # OR
+      get 'contact', to: 'pages#contact'
+    end
+
+  rails routes
+    # Prefix Verb URI Pattern             Controller#Action
+    #contact GET  /contact(.:format)      pages#contact
+
+<!-- Launch a local server with Rails -->
+  - rails s
+  - then go to localhost:3000 in your browser
+
+<!-- Command allowing you to list your app’s routes with Rails -->
+  - rails routes
+
+  gives you:
+    - Prefix is the rails path prefix of the associated route
+    - Verb is the HTTP verb of the route
+    - URI Pattern is the path of the route
+    - Controller#Action are targeted controller and method
+
+<!-- Build a PagesController -->
+  - rails generate controller pages/controller_name
+  - Note: This also generates the pages folder in app/views!
+
+<!-- Build a link to an inner page in a Rails app -->
+  - <%= link_to "contact", contact_path %>
+
+<!-- Define a static page ‘home’ as homepage with Rails -->
+  # config/routes.rb
+    Rails.application.routes.draw do
+      root to: 'pages#home'
+    end
+
+  Results in:
+    rails routes
+      #Prefix Verb URI Pattern             Controller#Action
+      #  root GET  /                       pages#home
+
+<!-- Build the path to a page of a Rails app -->
+  - Run rails routes in your terminal to know the prefix of the associated route
+  - Append _path to the prefix and Rails builds the path
+
+  # Example
+    rails routes
+    # Prefix Verb URI Pattern             Controller#Action
+    #contact GET  /pages/contact          pages#contact
+    #   root GET  /                       pages#home
+
+    contact_path
+    # => '/pages/contact'
+
+<!-- Skip generating tests when creating a new Rails app -->
+  - rails new app_name -T
+
+<!-- The app folder contains most of the code of a Rails project (MVC + assets): -->
+  - app
+    |--assets
+    |--controllers
+    |--models
+    |--views
+
+
+Questions:
+- How to get the path to a page?

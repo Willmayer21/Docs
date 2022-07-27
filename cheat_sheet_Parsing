@@ -1,0 +1,226 @@
+# How can you open a web page in Ruby?
+  require "open-uri"
+
+  url = "https://www.lewagon.com"
+
+  html_content = URI.open(url).read
+  puts html_content
+
+# JSON stands for JavaScript Object Notation, as it is structured like a JavaScript Object.
+# Delimited by curly brackets, a JSON is a set of key-value pairs and is very similar to a Ruby Hash.
+# Example:
+beatles.json
+{
+  "title": "The Beatles",
+  "beatles": [
+    {
+      "first name": "John",
+      "last name": "Lennon",
+      "instrument": "Guitar"
+    },
+    {
+      "first name": "Paul",
+      "last name": "McCartney",
+      "instrument": "Bass Guitar"
+    },
+    # ...
+  ]
+}
+#
+
+# Which gem is used to parse a .xml or .html document?
+  require "nokogiri"
+#
+
+# What do you need to require to parse a .json file
+  # You need to require JSON module.
+  require "json"
+#
+
+# How do you parse a .csv file row by row?
+  Consider beatles.csv:
+  "John","Lennon","Guitar"
+  "Paul","McCartney","Bass Guitar"
+
+  --> And the script:
+
+  require "csv"
+  filepath = "/my_folder/beatles.csv"
+  CSV.foreach(filepath) do |row|
+    puts "#{row[0]} #{row[1]} played #{row[2]}"
+  end
+  --> "John Lennon played Guitar"
+  --> "Paul McCartney played Bass Guitar"
+#
+
+# How do you store data in a .csv file?
+  require "csv"
+
+  filepath = "beatles.csv"
+
+  CSV.open(filepath, "wb") do |csv|
+    csv << ["First Name", "Last Name", "Instrument"]
+    csv << ["John", "Lennon", "Guitar"]
+    csv << ["Paul", "McCartney", "Bass Guitar"]
+  end
+#
+
+# scrape every chocolate recipe name and URL from allrecipes recipe website #
+  require "open-uri"
+  require "nokogiri"
+
+  url = "https://www.allrecipes.com/search/results/?search=chocolate"
+
+  html_file = URI.open(url).read
+  html_doc = Nokogiri::HTML(html_file)
+
+  html_doc.search(".card__recipe").each do |element|
+    puts element.search(".card__imageContainer a").first.attribute("title").value.strip
+    puts element.search(".card__imageContainer a").first.attribute("href").value.strip
+  end
+#
+
+# find the elements with a given selector from a scraped .html document #
+  html_doc.search("selector").each do |element|
+    puts element.text
+  end
+#
+
+# store data in a .json file #
+  require "json"
+
+  beatles = { beatles: [
+    {
+      first_name: "John",
+      appearance: "Lennon",
+      instrument: "Guitar"
+    },
+    [...]
+  ]}
+
+  File.open(filepath, "w") do |file|
+    file.write(JSON.generate(beatles))
+  end
+#
+
+# XML means eXtensible Markup Language, starts with XML tag,
+# contains elements and nested sub-documents,
+# elements composed of a tag and a content. #
+  <beatles>
+    <title>The Beatles</title>
+    <beatle>
+      <first_name>John</first_name>
+      <last_name>Lennon</last_name>
+      <instrument>Guitar</instrument>
+    </beatle>
+    <beatle>
+      <first_name>Paul</first_name>
+      <last_name>McCartney</last_name>
+      <instrument>Bass Guitar</instrument>
+    </beatle>
+    ...
+  </beatles>
+  #
+
+# How do you parse a local .xml file here above (3 steps)?
+  require "nokogiri"
+
+  # step 1: Open the .xml file
+  file = File.open("beatles.xml")
+
+  # step 2: Convert the .xml file in a Nokogiri::XML document
+  document = Nokogiri::XML(file)
+
+  # step 3: You can iterate through elements of the Nokogiri::XML document
+  document.root.xpath("beatles").each do |beatle|
+    first_name = beatle.xpath("name").text
+    last_name = beatle.xpath("appearance").text
+    instrument = beatle.xpath("origin").text
+
+    puts "#{first_name} #{last_name} played #{instrument}"
+  end
+#
+
+# How do you store data in a .xml file?
+  require "nokogiri"
+
+  filepath  = "beatles.xml"
+  builder   = Nokogiri::XML::Builder.new(encoding: "UTF-8") do
+    beatles do
+      title "The Beatles"
+      beatle do
+        first_name "John"
+        last_name  "Lennon"
+        instrument "Guitar"
+      end
+      beatle do
+        # [...]
+      end
+    end
+  end
+
+  File.open(filepath, "w") { |file| file.write(builder.to_xml) }
+#
+
+
+
+# What Ruby type is stored in the row block parameter in this .csv file parsing?
+  CSV.foreach(filepath) do |row|
+    puts row
+  end
+  --> A Ruby Array: row.class #=> Array
+#
+
+# What Ruby type is stored in the row in this .csv file parsing?
+  CSV.foreach(filepath, { headers: true }) do |row|
+    puts row
+  end
+  --> A Ruby CSV::Row (similar to a Ruby hash).
+  row.class
+  # => CSV::Row
+#
+
+# How do you parse a .json file
+  You need to use JSON.parse from JSON module.
+  # ./beatles.json
+  {
+    "beatles": [
+      { "first_name": "John", "last_name": "Lennon", "instrument": "Guitar" },
+      { "first_name": "Paul", "last_name": "McCartney", "instrument": "Bass Guitar"}
+    ]
+  }
+
+  require "json"
+  filepath = "beatles.json"
+  serialized_beatles = File.read(filepath)
+  beatles = JSON.parse(serialized_beatles)
+  # beatles is a Ruby hash
+#
+
+# How do you parse a .json file from an API?
+  --> First, you need open from OpenUri module
+  --> then you need JSON.parse from JSON module.
+
+  Consider this .json
+  { "type": "success",
+    "value": {
+      "id": 237,
+      "joke": "bla bla bla",
+      "categories": [ ]
+    }
+  }
+
+  --> And this script:
+
+  require "json"
+  require "open-uri"
+
+  api_url = "http://api.icndb.com/jokes/random?escape=javascript"
+
+  Uri.open(api_url) do |stream|
+    quote = JSON.parse(stream.read)
+    puts quote["value"]["joke"]
+  end
+
+  # => "When Chuck Norris plays Monopoly, it affects the actual world economy."
+#

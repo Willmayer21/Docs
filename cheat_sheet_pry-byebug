@@ -1,0 +1,33 @@
+To use prybug, install it first in terminal:
+gem install pry-byebug
+
+require it at the top of your code:
+require "pry-byebug"
+
+Then, in your code add:
+binding.pry
+
+the execution will stop where binding.pry has been inserted. Once the program stops you can have a look at ANY variables you have at hand by typing them followed by enter.
+
+You can continue the entire program until the next binding.pry by typing:
+continue
+continue execute the next line
+
+by typing:
+next
+the following line in the code is executed
+
+step is the abreviation for step in.
+by typing: step
+you can go in the fonction at hand. Use next to get out of step.
+
+in the debugger, type help to have the entire command list available in pry-byebug.
+
+3 key words:
+continue - go until the next binding.pry or end of program
+next - execute next line and stops
+step - enter in the methode of the line
+
+once you are done with degubing TAKE OUT the require at the top of the page and TAKE OUT all the binding.pry
+
+if binding.pry used in each do.. the program will stop each time for each element.

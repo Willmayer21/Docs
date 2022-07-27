@@ -1,0 +1,31 @@
+Objects are not present in all languages.
+
+
+
+
+Object:
+compsoed of two things: data and behavior.
+
+data: bolean, table, string.
+
+behavior: is dinamic. its the methode that you can use on the data.
+like .split
+behavior define the state of the data
+behavior can alter the state of the variable with method with !
+all methode do not always change the state of the variable.
+
+
+
+#### methaphore one ####
+Class and instance
+Class = moule a gateau
+Instance is the cake
+
+ peter = String.new("peter")
+ mary = String.new("mary")
+-> string is a class
+-> peter and mary are instance of the class String
+Once the object (peter and mary) are created they are independent and can be modified on their own.
+######################
+
+a book titled "how to build a car" gives us 3 cars that are instance of the class book
